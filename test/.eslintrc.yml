@@ -1,0 +1,10 @@
+extends: ../.eslintrc.yml
+env:
+  mocha: true
+globals:
+  app: true
+  request: true
+  expect: true
+  sinon: true
+rules:
+  import/no-extraneous-dependencies: 0

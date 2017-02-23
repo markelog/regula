@@ -1,0 +1,16 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  "apps" : [
+    {
+      "name": "example",
+      "script": "src/app.js",
+      "exec_mode": "cluster",
+      "merge_logs": true,
+      "node_args": "--optimize_for_size --max_old_space_size=920 --gc_interval=100 --use_strict --harmony-async-await",
+      "instances": 0
+    }
+  ],
+}

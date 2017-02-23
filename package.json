@@ -1,0 +1,47 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "Example for the talk",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "pm2": "pm2 start ecosystem.json --env=production && pm2 logs",
+    "start": "node-dev --harmony-async-await --no-notify src/app",
+    "test:integration": "mocha 'test/integration/**/*.js'",
+    "test:unit": "mocha 'test/unit/**/*.js'",
+    "test": "npm run lint && npm run test:unit && npm run test:integration"
+  },
+  "engines": {
+    "node": "7.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/markelog/example"
+  },
+  "author": "Oleg Gaidarenko <markelog@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/markelog/example/issues"
+  },
+  "homepage": "https://github.com/markelog/example#readme",
+  "dependencies": {
+    "concurrency-logger": "^2.0.1",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^3.2.0",
+    "koa-favicon": "^2.0.0",
+    "koa-router": "^7.1.0",
+    "pm2": "^2.4.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.15.0",
+    "eslint-config-sexy": "^0.0.3",
+    "mocha": "^3.2.0",
+    "node-dev": "^3.1.3",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0",
+    "supertest": "^3.0.0",
+    "supertest-as-promised": "^4.0.2",
+    "supertest-koa-agent": "^0.3.0"
+  }
+}
