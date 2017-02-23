@@ -1,5 +1,7 @@
-const config = require('./default');
+const config = require('./development');
 
-config.shouldLog = false;
+// Disable logs - don't need that info in tests
+config.database.options.logging = false;
+config.logs.enabled = false;
 
 module.exports = config;

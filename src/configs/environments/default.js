@@ -1,4 +1,5 @@
 module.exports = {
   http: require('../http'),
-  shouldLog: true
+  database: require('../database'),
+  logs: require('../logs')
 };
