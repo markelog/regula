@@ -54,12 +54,4 @@ describe('/profiles', () => {
       return request(app).get('/profiles/non-existent').expect(404);
     });
   });
-
-  describe('GET /profiles/:handle', () => {
-    it('respond with all profiles', () => {
-      return request(app)
-        .get('/profiles/non-existent')
-        .expect(404);
-    });
-  });
 });

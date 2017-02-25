@@ -41,7 +41,11 @@ describe('Profiles controller', () => {
       const result = await instance.get('markelog');
 
       expect(result).to.equal('test');
-      expect(stub).to.have.been.calledWith({ handle: 'markelog' });
+      expect(stub).to.have.been.calledWith({
+        where: {
+          handle: 'markelog'
+        }
+      });
     });
   });
 });
