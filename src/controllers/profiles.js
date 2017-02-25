@@ -17,8 +17,14 @@ module.exports = class Profile {
    * @return {Object}
    */
   async all() {
-    const all = await models.Profiles.findAll();
+    return models.Profiles.findAll();
+  }
 
-    return all;
+  /**
+   * Get specific profile
+   * @return {Object}
+   */
+  async get(handle) {
+    return models.Profiles.findOne({ handle });
   }
 };

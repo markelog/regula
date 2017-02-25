@@ -17,6 +17,14 @@ module.exports = (storage, Sequelize) => {
         len: [2, 255]
       }
     },
+    handle: {
+      type: Sequelize.TEXT,
+      allowNull: false,
+      unique: true,
+      validate: {
+        len: [2, 255]
+      }
+    },
     title: {
       type: Sequelize.TEXT,
       allowNull: false,

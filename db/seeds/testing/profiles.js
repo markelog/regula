@@ -5,6 +5,7 @@ module.exports = {
       bossId: 2,
       name: 'Oleg Gaidarenko',
       title: 'Kinda cool developer',
+      handle: 'markelog',
       about: 'Killa gorilla',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -14,6 +15,7 @@ module.exports = {
       name: 'Andrés C. Viesca Ruiz',
       title: 'Taco developer',
       about: 'Sexy turtle',
+      handle: 'Viestat',
       contacts: JSON.stringify({}),
       social: JSON.stringify({}),
       createdAt: new Date(),

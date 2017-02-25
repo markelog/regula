@@ -16,4 +16,11 @@ router.get(
   }
 );
 
+router.get(
+  '/:handle',
+  async (ctx) => {
+    ctx.body = await ctx.controller.get(ctx.params.handle);
+  }
+);
+
 module.exports = router;
