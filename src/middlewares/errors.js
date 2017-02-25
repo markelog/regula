@@ -1,3 +1,5 @@
+const configs = require('../configs');
+
 module.exports = () => {
   return async function errors(ctx, next) {
     try {
@@ -13,7 +15,9 @@ module.exports = () => {
         }
       };
 
-      console.error(error);
+      if (configs.logs.enabled) {
+        console.error(error);
+      }
     }
   };
 };

@@ -25,6 +25,10 @@ module.exports = class Profile {
    * @return {Object}
    */
   async get(handle) {
-    return models.Profiles.findOne({ handle });
+    return models.Profiles.findOne({
+      where: {
+        handle
+      }
+    });
   }
 };

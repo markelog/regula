@@ -19,7 +19,13 @@ router.get(
 router.get(
   '/:handle',
   async (ctx) => {
-    ctx.body = await ctx.controller.get(ctx.params.handle);
+    const result = await ctx.controller.get(ctx.params.handle);
+
+    if (result == null) {
+      ctx.throw(404);
+    }
+
+    ctx.body = result;
   }
 );
 
