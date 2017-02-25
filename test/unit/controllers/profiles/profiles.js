@@ -48,4 +48,27 @@ describe('Profiles controller', () => {
       });
     });
   });
+
+  describe('delete method', () => {
+    let stub;
+
+    beforeEach(() => {
+      stub = sinon.stub(models.Profiles, 'destroy', () => 'test');
+    });
+
+    afterEach(() => {
+      stub.restore();
+    });
+
+    it('executes search for specifc profile', async () => {
+      const result = await instance.delete('markelog');
+
+      expect(result).to.equal('test');
+      expect(stub).to.have.been.calledWith({
+        where: {
+          handle: 'markelog'
+        }
+      });
+    });
+  });
 });

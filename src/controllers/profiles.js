@@ -31,4 +31,16 @@ module.exports = class Profile {
       }
     });
   }
+
+  /**
+   * Delete specific profile
+   * @return {Object}
+   */
+  async delete(handle) {
+    return models.Profiles.destroy({
+      where: {
+        handle
+      }
+    });
+  }
 };

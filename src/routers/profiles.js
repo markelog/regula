@@ -29,4 +29,11 @@ router.get(
   }
 );
 
+router.delete(
+  '/:handle',
+  async (ctx) => {
+    ctx.body = await ctx.controller.delete(ctx.params.handle);
+  }
+);
+
 module.exports = router;

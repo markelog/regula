@@ -54,4 +54,11 @@ describe('/profiles', () => {
       return request(app).get('/profiles/non-existent').expect(404);
     });
   });
+
+  describe('DELETE /profiles', () => {
+    it('deletes profile', async () => {
+      await request(app).delete('/profiles/markelog').expect(200);
+      await request(app).get('/profiles/markelog').expect(404);
+    });
+  });
 });
