@@ -71,4 +71,35 @@ describe('Profiles controller', () => {
       });
     });
   });
+
+  describe('create method', () => {
+    let stub;
+    const fixture = {
+      id: 2,
+      bossId: 1,
+      name: 'Andrés C. Viesca Ruiz',
+      title: 'Taco developer',
+      about: 'Sexy turtle',
+      handle: 'Viestat',
+      contacts: JSON.stringify({}),
+      social: JSON.stringify({}),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    beforeEach(() => {
+      stub = sinon.stub(models.Profiles, 'create', () => 'test');
+    });
+
+    afterEach(() => {
+      stub.restore();
+    });
+
+    it('creates profile', async () => {
+      const result = await instance.create(fixture);
+
+      expect(result).to.equal('test');
+      expect(stub).to.have.been.calledWith(fixture);
+    });
+  });
 });

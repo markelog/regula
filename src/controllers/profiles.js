@@ -43,4 +43,12 @@ module.exports = class Profile {
       }
     });
   }
+
+  /**
+   * Create profile
+   * @return {Object}
+   */
+  async create(profile) {
+    return models.Profiles.create(profile);
+  }
 };
