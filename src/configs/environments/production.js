@@ -1,3 +1,5 @@
+const parse = require('parse-database-url');
+
 const config = require('./default');
 
 config.setup.executeSeeds = false;
