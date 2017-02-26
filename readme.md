@@ -11,6 +11,7 @@
 - `npm run lint` - lint files
 - `npm run test:unit` - run unit tests
 - `npm run test:integration` - run integration tests
+- `npm run test:coverage` - run all tests and get coverage report
 - `npm test` - run lint and **all** the test
 
 ### Start
