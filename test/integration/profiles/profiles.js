@@ -7,7 +7,6 @@ describe('/profiles', () => {
 
   beforeEach(() => {
     markelog = {
-      id: 1,
       bossId: 2,
       name: 'Oleg Gaidarenko',
       title: 'Kinda cool developer',
@@ -18,7 +17,6 @@ describe('/profiles', () => {
     };
 
     viestat = {
-      id: 2,
       bossId: 1,
       name: 'Andrés C. Viesca Ruiz',
       title: 'Taco developer',
@@ -105,7 +103,6 @@ describe('/profiles', () => {
 
     it('creates profile when it doesn\'t exist', async () => {
       markelog.handle = 'test';
-      delete markelog.id;
 
       return request(app)
         .put('/profiles/test')
