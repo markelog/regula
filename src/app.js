@@ -4,6 +4,7 @@ const Koa = require('koa');
 // Koa dependencies
 const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
+const cors = require('kcors');
 
 // Internal dependecies
 const config = require('./configs');
@@ -29,6 +30,7 @@ if (config.logs.enabled) {
   app.use(logger());
 }
 
+app.use(cors());
 app.use(sequelize(models.Sequelize));
 app.use(favicon(`${__dirname}/favicon.ico`));
 app.use(bodyParser());
