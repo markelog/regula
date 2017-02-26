@@ -14,5 +14,10 @@
     {
       "url": "heroku/nodejs"
     }
-  ]
+  ],
+  "scripts": {
+    "dokku": {
+      "predeploy": "npm run db:migrate && npm run db:seed"
+    }
+  }
 }

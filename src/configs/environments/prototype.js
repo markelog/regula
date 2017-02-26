@@ -2,8 +2,6 @@ const parse = require('parse-database-url');
 
 const config = require('./default');
 
-config.setup.executeSeeds = false;
-
 const psql = parse(process.env.DATABASE_URL);
 
 config.database = {
