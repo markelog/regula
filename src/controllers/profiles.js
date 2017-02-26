@@ -14,7 +14,7 @@ module.exports = class Profile {
 
   /**
    * Get all profiles
-   * @return {Object}
+   * @return {Promise}
    */
   async all() {
     return models.Profiles.findAll();
@@ -22,7 +22,8 @@ module.exports = class Profile {
 
   /**
    * Get specific profile
-   * @return {Object}
+   * @param {string} handle
+   * @return {Promise}
    */
   async get(handle) {
     return models.Profiles.findOne({
@@ -34,21 +35,58 @@ module.exports = class Profile {
 
   /**
    * Delete specific profile
-   * @return {Object}
+   * @param {string} handle
+   * @return {Boolean} - whenever or not action was performed
    */
   async delete(handle) {
-    return models.Profiles.destroy({
+    await models.Profiles.destroy({
       where: {
         handle
       }
     });
+
+    return true;
   }
 
   /**
    * Create profile
-   * @return {Object}
+   * @param {Object} data - profile data
+   * @return {Boolean} - whenever or not action was performed
    */
-  async create(profile) {
-    return models.Profiles.create(profile);
+  async create(data) {
+    await models.Profiles.create(data);
+
+    return true;
+  }
+
+  /**
+   * Update the specific profile
+   * @param {string} handle
+   * @param {object} data - new profile data
+   * @return {string} response type - "created" | "updated"
+   */
+  async update(handle, data) {
+    // So method wouldn't became destructive
+    data = Object.assign({}, data);
+
+    const profile = await this.get(handle);
+
+    // If there is no profile - create one,
+    // that's what concepts of REST tell us
+    if (profile == null) {
+      // Handle needs to be present for create request
+      data.handle = handle;
+
+      await this.create(data);
+      return 'created';
+    }
+
+    // We can't allow `handle` to be updated
+    // since its used all over the place.
+    delete data.handle;
+
+    // Check if record exists in db
+    await profile.update(data);
+    return 'updated';
   }
 };

@@ -2,29 +2,34 @@ const models = require('../../../src/models/index');
 const destroy = require('../../helpers/destroy');
 
 describe('/profiles', () => {
-  const markelog = {
-    id: 1,
-    bossId: 2,
-    name: 'Oleg Gaidarenko',
-    title: 'Kinda cool developer',
-    handle: 'markelog',
-    about: 'Killa gorilla',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
+  let markelog;
+  let viestat;
 
-  const viestat = {
-    id: 2,
-    bossId: 1,
-    name: 'Andrés C. Viesca Ruiz',
-    title: 'Taco developer',
-    about: 'Sexy turtle',
-    handle: 'Viestat',
-    contacts: JSON.stringify({}),
-    social: JSON.stringify({}),
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
+  beforeEach(() => {
+    markelog = {
+      id: 1,
+      bossId: 2,
+      name: 'Oleg Gaidarenko',
+      title: 'Kinda cool developer',
+      handle: 'markelog',
+      about: 'Killa gorilla',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    viestat = {
+      id: 2,
+      bossId: 1,
+      name: 'Andrés C. Viesca Ruiz',
+      title: 'Taco developer',
+      about: 'Sexy turtle',
+      handle: 'Viestat',
+      contacts: JSON.stringify({}),
+      social: JSON.stringify({}),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  });
 
   beforeEach(destroy);
   afterEach(destroy);
@@ -61,7 +66,7 @@ describe('/profiles', () => {
 
   describe('DELETE /profiles', () => {
     it('deletes profile', async () => {
-      await request(app).delete('/profiles/markelog').expect(200);
+      await request(app).delete('/profiles/markelog').expect(204);
       await request(app).get('/profiles/markelog').expect(404);
     });
   });
@@ -87,6 +92,39 @@ describe('/profiles', () => {
       const firstMessage = response.body.data[0].message;
 
       expect(firstMessage).to.equal('bossId cannot be null');
+    });
+  });
+
+  describe('PUT /profiles/:handle', () => {
+    it('updates profile', async () => {
+      return request(app)
+        .put('/profiles/markelog')
+        .send(markelog)
+        .expect(204);
+    });
+
+    it('creates profile when it doesn\'t exist', async () => {
+      markelog.handle = 'test';
+      delete markelog.id;
+
+      return request(app)
+        .put('/profiles/test')
+        .send(markelog)
+        .expect(201);
+    });
+
+    it('throws validation error', async () => {
+      // Fail validation
+      markelog.name = 't';
+
+      const response = await request(app)
+        .put('/profiles/markelog')
+        .send(markelog)
+        .expect(400);
+
+      const firstMessage = response.body.data[0].message;
+
+      expect(firstMessage).to.equal('Validation len failed');
     });
   });
 });

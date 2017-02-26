@@ -33,7 +33,8 @@ router.get(
 router.delete(
   '/:handle',
   async (ctx) => {
-    ctx.body = await ctx.controller.delete(ctx.params.handle);
+    await ctx.controller.delete(ctx.params.handle);
+    ctx.status = 204;
   }
 );
 
@@ -43,6 +44,26 @@ router.post(
     try {
       await ctx.controller.create(ctx.request.body);
       ctx.status = 201;
+    } catch (error) {
+      ctx.throw(new AppError(400, error.errors));
+    }
+  }
+);
+
+router.put(
+  '/:handle',
+  async (ctx) => {
+    try {
+      const type = await ctx.controller.update(
+        ctx.params.handle,
+        ctx.request.body
+      );
+
+      if (type === 'created') {
+        ctx.status = 201;
+      } else if (type === 'updated') {
+        ctx.status = 204;
+      }
     } catch (error) {
       ctx.throw(new AppError(400, error.errors));
     }
