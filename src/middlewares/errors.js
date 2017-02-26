@@ -5,12 +5,9 @@ module.exports = () => {
     try {
       await next();
     } catch (error) {
-      ctx.status = error.status || 500;
+      const status = error.status || 500;
 
-      ctx.body = {
-        message: error.message,
-        data: error.data || {}
-      };
+      ctx.respond(status, error.data, error.message);
 
       if (configs.logs.enabled) {
         console.error(error);

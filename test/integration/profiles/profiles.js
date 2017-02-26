@@ -41,8 +41,9 @@ describe('/profiles', () => {
       return request(app)
         .get('/profiles')
         .expect(200)
-        .then((data) => {
-          expect(data.body[0].about).to.equal('Killa gorilla');
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data[0].about).to.equal('Killa gorilla');
         });
     });
   });
@@ -52,8 +53,9 @@ describe('/profiles', () => {
       return request(app)
         .get('/profiles/markelog')
         .expect(200)
-        .then((data) => {
-          expect(data.body.handle).to.equal('markelog');
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data.handle).to.equal('markelog');
         });
     });
 
@@ -76,6 +78,7 @@ describe('/profiles', () => {
       await request(app)
         .post('/profiles')
         .send(markelog)
+        .expect('Content-Type', /json/)
         .expect(201);
 
       return request(app).get('/profiles/markelog').expect(200);
@@ -85,6 +88,7 @@ describe('/profiles', () => {
       const response = await request(app)
         .post('/profiles')
         .send({})
+        .expect('Content-Type', /json/)
         .expect(400);
 
       const firstMessage = response.body.data[0].message;
@@ -107,6 +111,7 @@ describe('/profiles', () => {
       return request(app)
         .put('/profiles/test')
         .send(markelog)
+        .expect('Content-Type', /json/)
         .expect(201);
     });
 
@@ -117,6 +122,7 @@ describe('/profiles', () => {
       const response = await request(app)
         .put('/profiles/markelog')
         .send(markelog)
+        .expect('Content-Type', /json/)
         .expect(400);
 
       const firstMessage = response.body.data[0].message;

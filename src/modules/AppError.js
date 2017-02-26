@@ -3,8 +3,7 @@ class AppError extends Error {
     super(message || status);
     this.status = status;
     this.message = message;
-    this.type = 'error';
-    this.data = data;
+    this.data = data || {};
   }
 }
 

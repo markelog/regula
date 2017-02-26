@@ -7,13 +7,16 @@ const router = new Router({ prefix: '/profiles' });
 
 router.use(async (context, next) => {
   context.controller = new Hello(context);
+
   await next();
 });
 
 router.get(
   '/',
   async (ctx) => {
-    ctx.body = await ctx.controller.all();
+    const result = await ctx.controller.all();
+
+    ctx.respond(200, result);
   }
 );
 
@@ -26,7 +29,7 @@ router.get(
       ctx.throw(404);
     }
 
-    ctx.body = result;
+    ctx.respond(200, result);
   }
 );
 
@@ -34,7 +37,8 @@ router.delete(
   '/:handle',
   async (ctx) => {
     await ctx.controller.delete(ctx.params.handle);
-    ctx.status = 204;
+
+    ctx.respond(204, {}, 'deleted');
   }
 );
 
@@ -43,7 +47,7 @@ router.post(
   async (ctx) => {
     try {
       await ctx.controller.create(ctx.request.body);
-      ctx.status = 201;
+      ctx.respond(201);
     } catch (error) {
       ctx.throw(new AppError(400, error.errors));
     }
@@ -60,9 +64,9 @@ router.put(
       );
 
       if (type === 'created') {
-        ctx.status = 201;
+        ctx.respond(201);
       } else if (type === 'updated') {
-        ctx.status = 204;
+        ctx.respond(204, {}, 'updated');
       }
     } catch (error) {
       ctx.throw(new AppError(400, error.errors));
