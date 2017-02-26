@@ -9,7 +9,7 @@
       "script": "src/app.js",
       "exec_mode": "cluster",
       "merge_logs": true,
-      "node_args": "--optimize_for_size --max_old_space_size=920 --gc_interval=100 --use_strict --harmony-async-await",
+      "node_args": "--optimize_for_size --max_old_space_size=920 --gc_interval=100 --use_strict --trace-warnings",
       "instances": 0
     }
   ],
