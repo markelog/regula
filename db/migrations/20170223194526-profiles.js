@@ -34,11 +34,13 @@ module.exports = {
       },
       contacts: {
         type: Sequelize.JSONB,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: {}
       },
       social: {
         type: Sequelize.JSONB,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: {}
       },
       createdAt: {
         allowNull: false,

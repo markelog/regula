@@ -1,7 +1,7 @@
 const Profiles = require('../../../../src/controllers/profiles');
 const models = require('../../../../src/models');
 
-describe.only('Profiles controller', () => {
+describe('Profiles controller', () => {
   let instance;
 
   beforeEach(() => {
@@ -41,11 +41,12 @@ describe.only('Profiles controller', () => {
       const result = await instance.get('markelog');
 
       expect(result).to.equal('test');
-      expect(stub).to.have.been.calledWith({
-        where: {
-          handle: 'markelog'
-        }
-      });
+
+      const arg = stub.firstCall.args[0];
+
+      expect(arg).to.have.deep.property('where.handle', 'markelog');
+      expect(arg).to.have.deep.property('include[0].as', 'boss');
+      expect(arg).to.have.deep.property('attributes[0]', 'name');
     });
   });
 
@@ -73,7 +74,7 @@ describe.only('Profiles controller', () => {
   });
 
   describe('create method', () => {
-    let stub;
+    const stubs = {};
     const fixture = {
       id: 2,
       bossId: 1,
@@ -88,18 +89,20 @@ describe.only('Profiles controller', () => {
     };
 
     beforeEach(() => {
-      stub = sinon.stub(models.Profiles, 'create', () => {});
+      stubs.create = sinon.stub(models.Profiles, 'create', () => {});
     });
 
     afterEach(() => {
-      stub.restore();
+      for (const stub in stubs) {
+        stubs[stub].restore();
+      }
     });
 
     it('creates profile', async () => {
       const result = await instance.create(fixture);
 
       expect(result).to.equal(true);
-      expect(stub).to.have.been.calledWith(fixture);
+      expect(stubs.create).to.have.been.calledWith(fixture);
     });
   });
 
@@ -116,7 +119,7 @@ describe.only('Profiles controller', () => {
       };
 
       stubs.create = sinon.stub(Profiles.prototype, 'create').returns('create called');
-      stubs.get = sinon.stub(Profiles.prototype, 'get').returns(stubs.profile);
+      stubs.findOne = sinon.stub(models.Profiles, 'findOne').returns(stubs.profile);
 
       fixture = {
         id: 2,
@@ -132,23 +135,28 @@ describe.only('Profiles controller', () => {
     });
 
     afterEach(() => {
-      stubs.get.restore();
-      stubs.create.restore();
+      for (const stub in stubs) {
+        if ('restore' in stubs[stub] === false) {
+          continue;
+        }
+
+        stubs[stub].restore();
+      }
     });
 
     it('updates profile without "handle" property', async () => {
       const result = await instance.update(handle, fixture);
       const arg = stubs.update.getCall(0).args[0];
 
-      stubs.get.calledWith(handle);
+      stubs.findOne.calledWith(handle);
 
-      // "handle" should not be present
+      // // "handle" should not be present
       expect(result).to.not.have.property('handle');
 
-      // Whereas other properties should be present
+      // // Whereas other properties should be present
       expect(arg).to.have.property('name');
 
-      // This method shouldn't be destructive
+      // // This method shouldn't be destructive
       expect(arg).to.not.equal(fixture);
 
       expect(result).to.equal('updated');
@@ -168,7 +176,7 @@ describe.only('Profiles controller', () => {
     });
 
     it('creates new profile if the old one doesn\'t exist', async () => {
-      stubs.get.returns(null);
+      stubs.findOne.returns(null);
 
       const result = await instance.update(handle, fixture);
 

@@ -93,16 +93,25 @@ describe('/profiles', () => {
 
       const firstMessage = response.body.data[0].message;
 
-      expect(firstMessage).to.equal('bossId cannot be null');
+      expect(firstMessage).to.equal('name cannot be null');
     });
   });
 
   describe('PUT /profiles/:handle', () => {
     it('updates profile', async () => {
-      return request(app)
+      markelog.name = 'test';
+
+      await request(app)
         .put('/profiles/markelog')
         .send(markelog)
         .expect(204);
+
+      return request(app)
+        .get('/profiles/markelog')
+        .expect(200)
+        .then((res) => {
+          expect(res).to.have.deep.property('body.data.name', 'test');
+        });
     });
 
     it('creates profile when it doesn\'t exist', async () => {
@@ -122,12 +131,10 @@ describe('/profiles', () => {
       const response = await request(app)
         .put('/profiles/markelog')
         .send(markelog)
-        .expect('Content-Type', /json/)
+        .expect('content-type', /json/)
         .expect(400);
 
-      const firstMessage = response.body.data[0].message;
-
-      expect(firstMessage).to.equal('Validation len failed');
+      expect(response).to.have.deep.property('body.data[0].message', 'Validation len failed');
     });
   });
 });

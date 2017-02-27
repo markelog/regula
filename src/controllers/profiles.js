@@ -1,5 +1,21 @@
 const models = require('../models');
 
+const attributes = [
+  'name',
+  'handle',
+  'about',
+  'title',
+  'contacts',
+  'social',
+  'createdAt'
+];
+
+const include = [{
+  model: models.Profiles,
+  as: 'boss',
+  attributes: ['name', 'handle']
+}];
+
 /**
  * Controller for the "/profiles" paths
  */
@@ -17,7 +33,11 @@ module.exports = class Profile {
    * @return {Promise}
    */
   async all() {
-    return models.Profiles.findAll();
+    const profiles = await models.Profiles.findAll({
+      attributes, include
+    });
+
+    return profiles;
   }
 
   /**
@@ -26,10 +46,10 @@ module.exports = class Profile {
    * @return {Promise}
    */
   async get(handle) {
+    const where = { handle };
+
     return models.Profiles.findOne({
-      where: {
-        handle
-      }
+      where, include, attributes
     });
   }
 
@@ -69,7 +89,9 @@ module.exports = class Profile {
     // So method wouldn't became destructive
     data = Object.assign({}, data);
 
-    const profile = await this.get(handle);
+    const profile = await models.Profiles.findOne({
+      where: { handle }
+    });
 
     // If there is no profile - create one,
     // that's what concepts of REST tell us

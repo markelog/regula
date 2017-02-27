@@ -8,7 +8,6 @@ const cors = require('kcors');
 
 // Internal dependecies
 const config = require('./configs');
-const models = require('./models');
 
 // Routers
 const profiles = require('./routers/profiles');
@@ -16,7 +15,6 @@ const profiles = require('./routers/profiles');
 // Middlewares
 const errors = require('./middlewares/errors');
 const logger = require('./middlewares/logger');
-const sequelize = require('./middlewares/sequelize');
 const respond = require('./middlewares/respond');
 
 // Initialize App
@@ -31,7 +29,6 @@ if (config.logs.enabled) {
 }
 
 app.use(cors());
-app.use(sequelize(models.Sequelize));
 app.use(favicon(`${__dirname}/favicon.ico`));
 app.use(bodyParser());
 

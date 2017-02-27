@@ -16,8 +16,6 @@ module.exports = {
       title: 'Taco developer',
       about: 'Sexy turtle',
       handle: 'Viestat',
-      contacts: JSON.stringify({}),
-      social: JSON.stringify({}),
       createdAt: new Date(),
       updatedAt: new Date()
     }]);

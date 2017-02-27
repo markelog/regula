@@ -6,10 +6,6 @@ module.exports = (storage, Sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
-    bossId: {
-      type: Sequelize.UUID,
-      allowNull: false
-    },
     name: {
       type: Sequelize.TEXT,
       allowNull: false,
@@ -42,12 +38,27 @@ module.exports = (storage, Sequelize) => {
     contacts: {
       type: Sequelize.JSONB,
       allowNull: true,
+      defaultValue: {}
     },
     social: {
       type: Sequelize.JSONB,
       allowNull: true,
+      defaultValue: {}
     },
   }, {
+    classMethods: {
+      associate(models) {
+        models.Profiles.belongsTo(models.Profiles, {
+          foreignKey: 'bossId',
+          as: 'boss'
+        });
+
+        models.Profiles.hasMany(models.Profiles, {
+          foreignKey: 'id',
+          as: 'subordinates'
+        });
+      }
+    },
     timestamps: true,
     paranoid: true,
     tableName: 'Profiles'

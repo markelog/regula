@@ -9,3 +9,4 @@ globals:
 rules:
   import/no-extraneous-dependencies: "off"
   no-unused-expressions: "off"
+  no-continue: "off"
