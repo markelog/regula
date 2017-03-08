@@ -49,7 +49,7 @@ describe('/profiles', () => {
   });
 
   describe('GET /profiles/:handle', () => {
-    it('respond with all profiles', () => {
+    it('respond with specific profile', () => {
       return request(app)
         .get('/profiles/markelog')
         .expect(200)
