@@ -5,6 +5,8 @@ services:
 
 language: node_js
 
+script: "npm run ci"
+
 cache:
   directories:
   - node_modules

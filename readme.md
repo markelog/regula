@@ -1,4 +1,4 @@
-# Maze API [![Build Status](https://travis-ci.org/wearereasonablepeople/maze-api.svg?branch=master)](https://travis-ci.org/wearereasonablepeople/maze-api)
+# Maze API [![Travis](https://img.shields.io/travis/wearereasonablepeople/maze-api.svg)](https://travis-ci.org/wearereasonablepeople/maze-api) [![Codecov](https://img.shields.io/codecov/c/github/wearereasonablepeople/maze-api.svg)](https://codecov.io/gh/wearereasonablepeople/maze-api)
 
 ## Requirements
 
