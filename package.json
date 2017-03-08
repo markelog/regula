@@ -1,7 +1,7 @@
 {
-  "name": "example",
+  "name": "maze-api",
   "version": "1.0.0",
-  "description": "Example for the talk",
+  "description": "Maze API",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -25,13 +25,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/markelog/example"
+    "url": "github.com/wearereasonablepeople/maze-api"
   },
   "author": "Oleg Gaidarenko <markelog@gmail.com>",
   "bugs": {
-    "url": "https://github.com/markelog/example/issues"
+    "url": "https://github.com/wearereasonablepeople/maze-api/issues"
   },
-  "homepage": "https://github.com/markelog/example#readme",
+  "homepage": "https://github.com/wearereasonablepeople/maze-api#readme",
   "dependencies": {
     "concurrency-logger": "^2.0.1",
     "kcors": "^2.2.1",

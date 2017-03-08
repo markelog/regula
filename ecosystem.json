@@ -5,7 +5,7 @@
    */
   "apps" : [
     {
-      "name": "example",
+      "name": "maze-api",
       "script": "src/app.js",
       "exec_mode": "cluster",
       "merge_logs": true,
