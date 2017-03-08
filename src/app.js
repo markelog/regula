@@ -3,13 +3,13 @@ const Koa = require('koa');
 
 // Koa dependencies
 const bodyParser = require('koa-bodyparser');
-const favicon = require('koa-favicon');
 const cors = require('kcors');
 
 // Internal dependecies
 const config = require('./configs');
 
 // Routers
+const favicon = require('./routers/favicon');
 const profiles = require('./routers/profiles');
 
 // Middlewares
@@ -24,12 +24,13 @@ const app = new Koa();
 app.use(respond());
 app.use(errors());
 
+app.use(favicon.routes());
+
 if (config.logs.enabled) {
   app.use(logger());
 }
 
 app.use(cors());
-app.use(favicon(`${__dirname}/favicon.ico`));
 app.use(bodyParser());
 
 app.use(profiles.allowedMethods({ throw: true }));
