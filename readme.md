@@ -12,7 +12,7 @@
 - `npm run test:unit` - run unit tests
 - `npm run test:integration` - run integration tests
 - `npm run test:coverage` - run all tests and get coverage report
-- `npm test` - run lint and **all** the test
+- `npm test` - run lint and **all** the test with coverage report
 
 ### Start
 - `npm start` - setups the database and start the server
@@ -20,9 +20,7 @@
 - `npm run pm2` - starts the server with pm2 and optimized conditions
 
 ### Setup
-- `npm run db:migrate`: executes all database migrations,
-- `npm run db:seed`: executes all database seeds,
-- `npm run db:start`: starts the database,
-- `npm run db:stop`: stops the database,
-- `npm run db:restart`: restart the database,
-- `npm run db:setup`: start the database and executes migrations/seeds
+- `npm run db:migrate`: executes all database migrations
+- `npm run db:seed`: executes all database seeds
+- `npm run db:start`: starts the database
+- `npm run db`: start the database and executes migrations/seeds
