@@ -1,5 +1,3 @@
-const { execSync } = require('child_process');
-
 const PSQL = require('fastdev-psql');
 
 const { database } = require('../src/configs');
@@ -18,10 +16,10 @@ if (!process.env.TRAVIS) {
 }
 
 psql.up().then(() => {
-  console.log(execSync('npm run db:migrate').toString());
-  console.log(execSync('npm run db:seed').toString());
-
   process.exit(0);
-}).catch(error => console.error(error));
+}).catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
 
 psql.pump();
