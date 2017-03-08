@@ -3,7 +3,7 @@
 ## Requirements
 
 1. [Docker](https://docs.docker.com/)
-1. [Nodejs](https://nodejs.org/en/) > 6
+1. [Nodejs](https://nodejs.org/en/) > 7.6.0
 
 ## Commands
 
