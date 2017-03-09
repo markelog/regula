@@ -44,7 +44,7 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .then((res) => {
           expect(res.body.data[0].about).to.equal('Killa gorilla');
-          expect(res.body.data[0].birthday).to.equal('2017-03-07T23:00:00.000Z');
+          expect(res.body.data[0].birthday).to.contain('2017-03-07');
         });
     });
   });
@@ -57,7 +57,7 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .then((res) => {
           expect(res.body.data.handle).to.equal('markelog');
-          expect(res.body.data.birthday).to.equal('2017-03-07T23:00:00.000Z');
+          expect(res.body.data.birthday).to.contain('2017-03-07');
         });
     });
 
