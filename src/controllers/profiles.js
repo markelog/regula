@@ -7,8 +7,10 @@ const attributes = [
   'title',
   'contacts',
   'social',
+  'addresses',
   'birthday',
-  'createdAt'
+  'createdAt',
+  'joinedAt'
 ];
 
 const include = [{

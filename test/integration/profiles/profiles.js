@@ -4,6 +4,9 @@ const destroy = require('../../helpers/destroy');
 describe('/profiles', () => {
   let markelog;
   let viestat;
+  let oleg;
+
+  const joinedAt = new Date();
 
   beforeEach(() => {
     markelog = {
@@ -14,6 +17,7 @@ describe('/profiles', () => {
       about: 'Killa gorilla',
       createdAt: new Date(),
       updatedAt: new Date(),
+      joinedAt,
       birthday: new Date('2017-03-08'),
     };
 
@@ -25,7 +29,30 @@ describe('/profiles', () => {
       handle: 'Viestat',
       createdAt: new Date(),
       updatedAt: new Date(),
+      addresses: {
+        home: {
+          country: 'USA',
+          state: 'Texas',
+          city: 'Paris'
+        },
+        current: {
+          country: 'The Netherlands',
+          province: 'Gelderland',
+          city: 'Bronkhorst'
+        }
+      },
+      joinedAt: new Date('988-01-01'),
       birthday: new Date('1992-05-28'),
+    };
+
+    oleg = {
+      bossId: 1,
+      name: 'Oleg Koval',
+      title: 'Developer',
+      about: 'this.about',
+      handle: 'ed',
+      updatedAt: new Date(),
+      birthday: new Date('1989-05-01'),
     };
   });
 
@@ -33,7 +60,7 @@ describe('/profiles', () => {
   afterEach(destroy);
 
   beforeEach(async () => {
-    await models.Profiles.bulkCreate([markelog, viestat]);
+    await models.Profiles.bulkCreate([markelog, viestat, oleg]);
   });
 
   describe('GET /profiles', () => {
@@ -45,6 +72,36 @@ describe('/profiles', () => {
         .then((res) => {
           expect(res.body.data[0].about).to.equal('Killa gorilla');
           expect(res.body.data[0].birthday).to.contain('2017-03-07');
+        });
+    });
+
+    it('respond with all profiles with joinedAt', () => {
+      return request(app)
+        .get('/profiles')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(new Date(res.body.data[0].joinedAt).getDay()).to.equal(joinedAt.getDay());
+        });
+    });
+
+    it('respond with all profiles with addresses for Andres', () => {
+      return request(app)
+        .get('/profiles')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data[1].addresses).to.deep.equal(viestat.addresses);
+        });
+    });
+
+    it('respond with all profiles with empty addresses for Oleg', () => {
+      return request(app)
+        .get('/profiles')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data[2].addresses).to.deep.equal({});
         });
     });
   });
