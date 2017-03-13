@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = (storage, Sequelize) => {
   const Profiles = storage.define('Profiles', {
     id: {
@@ -57,7 +59,10 @@ module.exports = (storage, Sequelize) => {
     },
     birthday: {
       type: Sequelize.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      get() {
+        return moment(this.getDataValue('birthday')).format('YYYY-MM-DD');
+      }
     },
   }, {
     classMethods: {

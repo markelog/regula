@@ -1,6 +1,7 @@
 const models = require('../models');
 
 const attributes = [
+  'id',
   'name',
   'handle',
   'about',
@@ -33,11 +34,28 @@ module.exports = class Profile {
 
   /**
    * Get all profiles
+   * @param {Object} [query] - query search on `title` and `name`
    * @return {Promise}
    */
-  async all() {
+  async all(query) {
+    let where = {};
+
+    if (query != null) {
+      const $or = [{
+        name: {
+          $ilike: `%${query}%`
+        }
+      }, {
+        title: {
+          $ilike: `%${query}%`
+        }
+      }];
+
+      where = { $or };
+    }
+
     const profiles = await models.Profiles.findAll({
-      attributes, include
+      attributes, include, where
     });
 
     return profiles;

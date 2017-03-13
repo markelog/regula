@@ -18,7 +18,7 @@ describe('/profiles', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       joinedAt,
-      birthday: new Date('2017-03-08'),
+      birthday: '1992-12-12',
     };
 
     viestat = {
@@ -41,7 +41,7 @@ describe('/profiles', () => {
           city: 'Bronkhorst'
         }
       },
-      joinedAt: new Date('988-01-01'),
+      joinedAt: new Date('1988-01-01'),
       birthday: new Date('1992-05-28'),
     };
 
@@ -71,7 +71,7 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .then((res) => {
           expect(res.body.data[0].about).to.equal('Killa gorilla');
-          expect(res.body.data[0].birthday).to.contain('2017-03-07');
+          expect(res.body.data[0].birthday).to.contain('1992-12-12');
         });
     });
 
@@ -104,6 +104,50 @@ describe('/profiles', () => {
           expect(res.body.data[2].addresses).to.deep.equal({});
         });
     });
+
+    it('filter profiles by name', () => {
+      return request(app)
+        .get('/profiles?q=Andrés')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data).to.have.length(1);
+          expect(res.body.data[0].name).to.equal('Andrés C. Viesca Ruiz');
+        });
+    });
+
+    it('filter profiles by name case-insensitive', () => {
+      return request(app)
+        .get('/profiles?q=andrés')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data).to.have.length(1);
+          expect(res.body.data[0].name).to.equal('Andrés C. Viesca Ruiz');
+        });
+    });
+
+    it('filter profiles by title', () => {
+      return request(app)
+        .get('/profiles?q=taco')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data).to.have.length(1);
+          expect(res.body.data[0].name).to.equal('Andrés C. Viesca Ruiz');
+        });
+    });
+
+    it('filter profiles by title case-insensitive', () => {
+      return request(app)
+        .get('/profiles?q=taCo')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body.data).to.have.length(1);
+          expect(res.body.data[0].name).to.equal('Andrés C. Viesca Ruiz');
+        });
+    });
   });
 
   describe('GET /profiles/:handle', () => {
@@ -114,7 +158,7 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .then((res) => {
           expect(res.body.data.handle).to.equal('markelog');
-          expect(res.body.data.birthday).to.contain('2017-03-07');
+          expect(res.body.data.birthday).to.contain('1992-12-12');
         });
     });
 

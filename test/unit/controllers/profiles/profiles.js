@@ -21,7 +21,30 @@ describe('Profiles controller', () => {
 
     it('executes search for all profiles', async () => {
       const result = await instance.all();
+      const arg = stub.firstCall.args[0];
 
+      expect(arg.where).to.deep.equal({});
+      expect(result).to.equal('test');
+    });
+
+    it('executes search for all profiles with query arguments', async () => {
+      const result = await instance.all('oleg');
+      const arg = stub.firstCall.args[0];
+
+      expect(arg.where).to.deep.equal({
+        $or: [
+          {
+            name: {
+              $ilike: '%oleg%'
+            }
+          },
+          {
+            title: {
+              $ilike: '%oleg%'
+            }
+          }
+        ]
+      });
       expect(result).to.equal('test');
     });
   });
@@ -46,7 +69,7 @@ describe('Profiles controller', () => {
 
       expect(arg).to.have.deep.property('where.handle', 'markelog');
       expect(arg).to.have.deep.property('include[0].as', 'boss');
-      expect(arg).to.have.deep.property('attributes[0]', 'name');
+      expect(arg).to.have.deep.property('attributes[0]', 'id');
     });
   });
 

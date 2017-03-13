@@ -14,7 +14,7 @@ router.use(async (context, next) => {
 router.get(
   '/',
   async (ctx) => {
-    const result = await ctx.controller.all();
+    const result = await ctx.controller.all(ctx.query.q);
 
     ctx.respond(200, result);
   }
