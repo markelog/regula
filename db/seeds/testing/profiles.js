@@ -21,7 +21,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       joinedAt: new Date(),
-      addresses: {
+      addresses: JSON.stringify({
         home: {
           country: 'USA',
           state: 'Texas',
@@ -32,7 +32,7 @@ module.exports = {
           province: 'Gelderland',
           city: 'Bronkhorst'
         }
-      },
+      }),
       birthday: new Date('1992-05-28'),
     }]);
   },
