@@ -5,7 +5,7 @@ module.exports = {
       'birthday',
       {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true
       }
     );
   },

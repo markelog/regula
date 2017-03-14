@@ -59,7 +59,7 @@ module.exports = (storage, Sequelize) => {
     },
     birthday: {
       type: Sequelize.DATEONLY,
-      allowNull: false,
+      allowNull: true,
       get() {
         return moment(this.getDataValue('birthday')).format('YYYY-MM-DD');
       }
