@@ -11,6 +11,15 @@ module.exports = {
       updatedAt: new Date(),
       joinedAt: new Date(),
       birthday: new Date('2017-03-08'),
+      contacts: JSON.stringify({
+        phones: [{
+          home: '+7 (965) 265-14-72'
+        }],
+
+        emails: [{
+          work: 'markelog@wearereasonablepeople.com'
+        }]
+      })
     }, {
       id: 2,
       bossId: 1,
@@ -33,6 +42,7 @@ module.exports = {
           city: 'Bronkhorst'
         }
       }),
+      contacts: JSON.stringify({}),
       birthday: new Date('1992-05-28'),
     }]);
   },
