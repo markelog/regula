@@ -1,7 +1,6 @@
 module.exports = {
   up(queryInterface) {
     return queryInterface.bulkInsert('Profiles', [{
-      id: 1,
       bossId: 2,
       name: 'Oleg Gaidarenko',
       title: 'Kinda cool developer',
@@ -11,6 +10,7 @@ module.exports = {
       updatedAt: new Date(),
       joinedAt: new Date(),
       birthday: new Date('2017-03-08'),
+      avatar: 'https://avatars3.githubusercontent.com/u/945528?v=3&s=400',
       contacts: JSON.stringify({
         phones: [{
           home: '+7 (965) 265-14-72'
@@ -21,7 +21,6 @@ module.exports = {
         }]
       })
     }, {
-      id: 2,
       bossId: 1,
       name: 'Andrés C. Viesca Ruiz',
       title: 'Taco developer',
@@ -30,6 +29,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       joinedAt: new Date(),
+      avatar: 'https://avatars0.githubusercontent.com/u/9158996?v=3&s=400',
       addresses: JSON.stringify({
         home: {
           country: 'USA',

@@ -7,6 +7,7 @@ const attributes = [
   'about',
   'title',
   'contacts',
+  'avatar',
   'social',
   'addresses',
   'birthday',

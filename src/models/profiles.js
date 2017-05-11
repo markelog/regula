@@ -57,6 +57,9 @@ module.exports = (storage, Sequelize) => {
       allowNull: true,
       defaultValue: {}
     },
+    avatar: {
+      type: Sequelize.TEXT
+    },
     birthday: {
       type: Sequelize.DATEONLY,
       allowNull: true,
