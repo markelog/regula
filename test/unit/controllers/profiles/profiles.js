@@ -60,7 +60,7 @@ describe('Profiles controller', () => {
       stub.restore();
     });
 
-    it('executes search for specifc profile', async () => {
+    it('gets specifc profile', async () => {
       const result = await instance.get('markelog');
 
       expect(result).to.equal('test');
@@ -69,7 +69,7 @@ describe('Profiles controller', () => {
 
       expect(arg).to.have.deep.property('where.handle', 'markelog');
       expect(arg).to.have.deep.property('include[0].as', 'boss');
-      expect(arg).to.have.deep.property('attributes[0]', 'id');
+      expect(arg.attributes.exclude).to.contain('id', 'bossId', 'deletedAt');
     });
   });
 
@@ -84,12 +84,13 @@ describe('Profiles controller', () => {
       stub.restore();
     });
 
-    it('executes search for specifc profile', async () => {
+    it('"deletes" the profile', async () => {
       const result = await instance.delete('markelog');
 
       expect(result).to.equal(true);
       expect(stub).to.have.been.calledWith({
         where: {
+          deletedAt: null,
           handle: 'markelog'
         }
       });
@@ -99,16 +100,27 @@ describe('Profiles controller', () => {
   describe('create method', () => {
     const stubs = {};
     const fixture = {
-      id: 2,
       bossId: 1,
       name: 'Andrés C. Viesca Ruiz',
       title: 'Taco developer',
       about: 'Sexy turtle',
       handle: 'Viestat',
-      contacts: JSON.stringify({}),
-      social: JSON.stringify({}),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      addresses: {
+        home: {
+          country: 'USA',
+          state: 'Texas',
+          city: 'Paris'
+        },
+        current: {
+          country: 'The Netherlands',
+          province: 'Gelderland',
+          city: 'Bronkhorst'
+        }
+      },
+      joinedAt: new Date('2017-05-28'),
+      birthday: new Date('1992-05-28'),
     };
 
     beforeEach(() => {
@@ -135,25 +147,40 @@ describe('Profiles controller', () => {
     let fixture;
 
     beforeEach(() => {
-      stubs.update = sinon.stub().returns('update called');
+      const update = sinon
+        .stub()
+        .returns('update called');
 
       stubs.profile = {
-        update: stubs.update
+        update
       };
 
-      stubs.create = sinon.stub(Profiles.prototype, 'create').returns('create called');
-      stubs.findOne = sinon.stub(models.Profiles, 'findOne').returns(stubs.profile);
+      stubs.create = sinon
+        .stub(Profiles.prototype, 'create')
+        .returns('create called');
 
       fixture = {
-        id: 2,
         bossId: 1,
         name: 'Andrés C. Viesca Ruiz',
         title: 'Taco developer',
         about: 'Sexy turtle',
-        contacts: JSON.stringify({}),
-        social: JSON.stringify({}),
+        handle: 'Viestat',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        addresses: {
+          home: {
+            country: 'USA',
+            state: 'Texas',
+            city: 'Paris'
+          },
+          current: {
+            country: 'The Netherlands',
+            province: 'Gelderland',
+            city: 'Bronkhorst'
+          }
+        },
+        joinedAt: new Date('2017-05-28'),
+        birthday: new Date('1992-05-28'),
       };
     });
 
@@ -168,10 +195,14 @@ describe('Profiles controller', () => {
     });
 
     it('updates profile without "handle" property', async () => {
-      const result = await instance.update(handle, fixture);
-      const arg = stubs.update.getCall(0).args[0];
+      stubs.findOrCreate = sinon
+        .stub(models.Profiles, 'findOrCreate')
+        .returns(new Promise((res) => {
+          res([stubs.profile, false]);
+        }));
 
-      stubs.findOne.calledWith(handle);
+      const result = await instance.update(handle, fixture);
+      const arg = stubs.profile.update.getCall(0).args[0];
 
       // // "handle" should not be present
       expect(result).to.not.have.property('handle');
@@ -186,10 +217,16 @@ describe('Profiles controller', () => {
     });
 
     it('updates profile and ignores new handle property', async () => {
+      stubs.findOrCreate = sinon
+        .stub(models.Profiles, 'findOrCreate')
+        .returns(new Promise((res) => {
+          res([stubs.profile, false]);
+        }));
+
       fixture.handle = 'new one!';
 
       const result = await instance.update(handle, fixture);
-      const arg = stubs.update.getCall(0).args[0];
+      const arg = stubs.profile.update.getCall(0).args[0];
 
       // "handle" should not be present
       expect(result).to.equal('updated');
@@ -199,16 +236,20 @@ describe('Profiles controller', () => {
     });
 
     it('creates new profile if the old one doesn\'t exist', async () => {
-      stubs.findOne.returns(null);
+      stubs.findOrCreate = sinon
+        .stub(models.Profiles, 'findOrCreate')
+        .returns(new Promise((res) => {
+          res([stubs.profile, true]);
+        }));
+
+      stubs.profile = {
+        update: sinon.stub().returns('test')
+      };
 
       const result = await instance.update(handle, fixture);
 
-      stubs.create.calledWith(fixture);
-
-      // "handle" should not be present
       expect(result).to.equal('created');
-
-      expect(stubs.update).to.not.have.been.called;
+      expect(stubs.profile.update).to.not.have.been.called;
     });
   });
 });
