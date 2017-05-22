@@ -15,12 +15,12 @@
 - `npm test` – run lint and **all** the test with coverage report
 
 ### Start
-- `npm start` – setups the database and start the server
-- `npm run dev` – starts the server with automatic restart if changes been made
-- `npm run pm2` – starts the server with pm2 and optimized conditions
+- `npm start` – setup the database and start the server
+- `npm run dev` – start the server with automatic restart if changes been made
+- `npm run pm2` – start the server with pm2 and optimized conditions
 
 ### Setup
-- `npm run db:migrate` – executes all database migrations
-- `npm run db:seed` – executes all database seeds
-- `npm run db:start` – starts the database
+- `npm run db:migrate` – execute all database migrations
+- `npm run db:seed` – execute all database seeds
+- `npm run db:start` – start the database
 - `npm run db` – start the database and executes migrations/seeds
