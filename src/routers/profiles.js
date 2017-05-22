@@ -20,6 +20,18 @@ router.get(
   }
 );
 
+router.post(
+  '/',
+  async (ctx) => {
+    try {
+      await ctx.controller.create(ctx.request.body);
+      ctx.respond(201);
+    } catch (error) {
+      ctx.throw(new AppError(400, error.errors || error.message, 'Can\'t create a user'));
+    }
+  }
+);
+
 router.get(
   '/:handle',
   async (ctx) => {
@@ -39,18 +51,6 @@ router.delete(
     await ctx.controller.delete(ctx.params.handle);
 
     ctx.respond(204, {}, 'deleted');
-  }
-);
-
-router.post(
-  '/',
-  async (ctx) => {
-    try {
-      await ctx.controller.create(ctx.request.body);
-      ctx.respond(201);
-    } catch (error) {
-      ctx.throw(new AppError(400, error.errors));
-    }
   }
 );
 

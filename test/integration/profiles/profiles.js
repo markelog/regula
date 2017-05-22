@@ -5,11 +5,47 @@ describe('/profiles', () => {
   let markelog;
   let viestat;
   let oleg;
+  let project;
 
   const joinedAt = new Date();
 
+  const validateProjectProps = (prj) => {
+    expect(prj).to.include.keys([
+      'name', 'pm', 'about', 'description',
+      'avatar', 'links', 'start',
+      'end', 'createdAt', 'updatedAt',
+      'profiles'
+    ]);
+
+    expect(prj).to.not.include.keys([
+      'id', 'deletedAt'
+    ]);
+  };
+
+  const validateProfileProps = (profile) => {
+    expect(profile).to.include.keys([
+      'birthday', 'name', 'handle',
+      'title', 'about', 'contacts',
+      'addresses', 'joinedAt', 'social',
+      'avatar', 'createdAt', 'updatedAt',
+    ]);
+
+    expect(profile).to.not.include.keys([
+      'id', 'deletedAt'
+    ]);
+  };
+
+  function create(data) {
+    return request(app)
+        .post('/profiles')
+        .send(data)
+        .expect('Content-Type', /json/)
+        .expect(201);
+  }
+
   beforeEach(() => {
     markelog = {
+      id: 1,
       bossId: 2,
       name: 'Oleg Gaidarenko',
       title: 'Kinda cool developer',
@@ -22,6 +58,7 @@ describe('/profiles', () => {
     };
 
     viestat = {
+      id: 2,
       bossId: 1,
       name: 'Andrés C. Viesca Ruiz',
       title: 'Taco developer',
@@ -41,11 +78,12 @@ describe('/profiles', () => {
           city: 'Bronkhorst'
         }
       },
-      joinedAt: new Date('1988-01-01'),
+      joinedAt: new Date('2017-05-28'),
       birthday: new Date('1992-05-28'),
     };
 
     oleg = {
+      id: 3,
       bossId: 1,
       name: 'Oleg Koval',
       title: 'Developer',
@@ -54,55 +92,134 @@ describe('/profiles', () => {
       updatedAt: new Date(),
       birthday: new Date('1989-05-01'),
     };
+
+    project = {
+      id: 1,
+      pm: 1,
+      name: 'Maze',
+      about: 'Intranet social network with focus on business side of employees communication',
+      description: 'Don\'t get lost',
+      avatar: 'http://www.mazegenerator.net/static/theta_maze_with_20_cells_diameter.png',
+      links: JSON.stringify([{
+        type: 'github',
+        name: 'front',
+        link: 'https://github.com/wearereasonablepeople/maze'
+      }, {
+        type: 'github',
+        name: 'api',
+        link: 'https://github.com/wearereasonablepeople/maze-api'
+      }]),
+      start: new Date('May 17, 2017'),
+      end: new Date('December 17, 2017'),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
   });
 
   beforeEach(destroy);
   afterEach(destroy);
+  afterEach(() => {
+    markelog = undefined;
+    viestat = undefined;
+    oleg = undefined;
+    project = undefined;
+  });
 
   beforeEach(async () => {
-    await models.Profiles.bulkCreate([markelog, viestat, oleg]);
+    const profiles = await models.Profiles.bulkCreate([markelog, viestat, oleg]);
+    await models.Projects.bulkCreate([project]);
+
+    profiles.forEach(async (profile) => {
+      await profile.setProjects(1);
+    });
   });
 
   describe('GET /profiles', () => {
-    it('respond with all profiles', () => {
-      return request(app)
-        .get('/profiles')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body.data[0].about).to.equal('Killa gorilla');
-          expect(res.body.data[0].birthday).to.contain('1992-12-12');
-        });
-    });
+    describe('all profiles', () => {
+      let profiles;
 
-    it('respond with all profiles with joinedAt', () => {
-      return request(app)
-        .get('/profiles')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(new Date(res.body.data[0].joinedAt).getDay()).to.equal(joinedAt.getDay());
-        });
-    });
+      beforeEach(() => {
+        return request(app)
+          .get('/profiles')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .then((res) => {
+            profiles = res.body.data;
+          });
+      });
 
-    it('respond with all profiles with addresses for Andres', () => {
-      return request(app)
-        .get('/profiles')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body.data[1].addresses).to.deep.equal(viestat.addresses);
-        });
-    });
+      afterEach(() => {
+        profiles = undefined;
+      });
 
-    it('respond with all profiles with empty addresses for Oleg', () => {
-      return request(app)
-        .get('/profiles')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body.data[2].addresses).to.deep.equal({});
+      it('responded with all profiles', () => {
+        const handles = [];
+
+        profiles.forEach((profile) => {
+          handles.push(profile.handle);
         });
+
+        expect(handles).to.have.members(['markelog', 'Viestat', 'ed']);
+      });
+
+      it('should contain proper properties', () => {
+        validateProfileProps(profiles[0]);
+        expect(profiles[0]).to.include.keys('boss', 'projects');
+      });
+
+      it('respond with all profiles with joinedAt', () => {
+        const testMarkelog = profiles.filter(profile => profile.handle === 'markelog')[0];
+        const actual = new Date(testMarkelog.joinedAt).getDay();
+
+        expect(actual).to.equal(joinedAt.getDay());
+      });
+
+      it('respond with all profiles with addresses for Andres', () => {
+        const andres = profiles.filter(profile => profile.handle === 'Viestat')[0];
+
+        expect(andres.addresses).to.deep.equal(viestat.addresses);
+      });
+
+      it('respond with all profiles with empty addresses for Oleg', () => {
+        const testOleg = profiles.filter(profile => profile.handle === 'ed')[0];
+
+        expect(testOleg.addresses).to.deep.equal({});
+      });
+
+      describe('projects', () => {
+        let testMarkelog;
+
+        beforeEach(() => {
+          testMarkelog = profiles.filter(profile => profile.handle === 'markelog')[0];
+        });
+
+        afterEach(() => {
+          testMarkelog = undefined;
+        });
+
+        it('there should be only one project associated with the markelog', () => {
+          expect(testMarkelog.projects).to.have.length(1);
+          expect(testMarkelog).to.have.deep.property('projects[0].pm.handle', 'markelog');
+        });
+
+        it('should be associated with the Maze', () => {
+          expect(testMarkelog.projects[0].name).to.equal('Maze');
+        });
+
+        it('should contain proper properties', () => {
+          validateProjectProps(testMarkelog.projects[0]);
+        });
+
+        it('should contain nested profiles', () => {
+          const nestedProfiles = testMarkelog.projects[0].profiles;
+
+          expect(nestedProfiles).to.have.length(3);
+        });
+
+        it('should proper properties in nested profiles', () => {
+          validateProfileProps(testMarkelog.projects[0].profiles[0]);
+        });
+      });
     });
 
     it('filter profiles by name', () => {
@@ -151,15 +268,35 @@ describe('/profiles', () => {
   });
 
   describe('GET /profiles/:handle', () => {
-    it('respond with specific profile', () => {
-      return request(app)
-        .get('/profiles/markelog')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body.data.handle).to.equal('markelog');
-          expect(res.body.data.birthday).to.contain('1992-12-12');
-        });
+    let profile;
+
+    describe('specific profile', () => {
+      beforeEach(() => {
+        return request(app)
+          .get('/profiles/markelog')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .then((res) => {
+            profile = res.body.data;
+          });
+      });
+
+      afterEach(() => {
+        profile = undefined;
+      });
+
+      it('responds with proper data', () => {
+        expect(profile.handle).to.equal('markelog');
+        expect(profile.birthday).to.contain('1992-12-12');
+      });
+
+      it('should contain proper properties', () => {
+        validateProfileProps(profile);
+      });
+
+      it('should contain proper projects properties', () => {
+        validateProjectProps(profile.projects[0]);
+      });
     });
 
     it('responds with 404 for non-existent profile', () => {
@@ -178,25 +315,37 @@ describe('/profiles', () => {
     beforeEach(destroy);
 
     it('creates profile', async () => {
-      await request(app)
-        .post('/profiles')
-        .send(markelog)
-        .expect('Content-Type', /json/)
-        .expect(201);
+      await create(viestat);
+      await create(markelog);
 
       return request(app).get('/profiles/markelog').expect(200);
     });
 
     it('throws validation error', async () => {
-      const response = await request(app)
+      const { body } = await request(app)
         .post('/profiles')
         .send({})
         .expect('Content-Type', /json/)
         .expect(400);
 
-      const firstMessage = response.body.data[0].message;
+      expect(body).to.have.deep.property('message', 'Can\'t create a user');
+      expect(body).to.have.deep.property('data[0].message');
+      expect(body.data[0].message).to.contain('cannot be null');
+    });
 
-      expect(firstMessage).to.equal('name cannot be null');
+    it('throws validation error for projects', async () => {
+      markelog.projects = ['test'];
+
+      const { body } = await request(app)
+        .post('/profiles')
+        .send(markelog)
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      await request(app).get('/profiles/markelog').expect(404);
+
+      expect(body).to.have.deep.property('message', 'Can\'t create a user');
+      expect(body).to.have.deep.property('data', 'invalid input syntax for integer: "test"');
     });
   });
 
@@ -209,35 +358,86 @@ describe('/profiles', () => {
         .send(markelog)
         .expect(204);
 
-      return request(app)
+      const res = await request(app)
+        .get('/profiles/markelog')
+        .expect(200);
+
+      expect(res).to.have.deep.property('body.data.name', 'test');
+    });
+
+    it('updates project association', async () => {
+      markelog.projects = [];
+
+      await request(app)
+        .put('/profiles/markelog')
+        .send(markelog)
+        .expect(204);
+
+      await request(app)
         .get('/profiles/markelog')
         .expect(200)
         .then((res) => {
-          expect(res).to.have.deep.property('body.data.name', 'test');
+          expect(res).to.not.have.deep.property('body.data.projects[0]');
         });
     });
 
-    it('creates profile when it doesn\'t exist', async () => {
-      markelog.handle = 'test';
+    describe('creates profile', () => {
+      beforeEach(() => {
+        return models.Profiles.destroy({
+          force: true,
+          where: {}
+        });
+      });
 
-      return request(app)
-        .put('/profiles/test')
-        .send(markelog)
-        .expect('Content-Type', /json/)
-        .expect(201);
-    });
+      it('creates profile if it doesn\'t exist', async () => {
+        delete markelog.id;
+        markelog.handle = 'test';
+        await create(viestat);
 
-    it('throws validation error', async () => {
-      // Fail validation
-      markelog.name = 't';
+        await request(app)
+          .put('/profiles/test')
+          .send(markelog)
+          .expect('Content-Type', /json/)
+          .expect(201);
 
-      const response = await request(app)
-        .put('/profiles/markelog')
-        .send(markelog)
-        .expect('content-type', /json/)
-        .expect(400);
+        const { body } = await request(app)
+          .get('/profiles/test')
+          .expect(200);
 
-      expect(response).to.have.deep.property('body.data[0].message', 'Validation len failed');
+        expect(body).to.have.deep.property('data.handle', 'test');
+      });
+
+      it("creates profile if it doesn't exist and associates it with project", async () => {
+        markelog.handle = 'test';
+        markelog.projects = [1];
+        await create(viestat);
+
+        await request(app)
+          .put('/profiles/test')
+          .send(markelog)
+          .expect('Content-Type', /json/)
+          .expect(201);
+
+        const { body } = await request(app)
+          .get('/profiles/test')
+          .expect(200);
+
+        expect(body).to.have.deep.property('data.projects[0].name', 'Maze');
+      });
+
+      it('throws validation error', async () => {
+        delete markelog.id;
+        markelog.name = 't';
+        await create(viestat);
+
+        const response = await request(app)
+          .put('/profiles/markelog')
+          .send(markelog)
+          .expect('content-type', /json/)
+          .expect(400);
+
+        expect(response).to.have.deep.property('body.data[0].message', 'Validation len failed');
+      });
     });
   });
 });

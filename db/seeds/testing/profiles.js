@@ -9,7 +9,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       joinedAt: new Date(),
-      birthday: new Date('2017-03-08'),
+      birthday: new Date('1992-03-08'),
       avatar: 'https://avatars3.githubusercontent.com/u/945528?v=3&s=400',
       contacts: JSON.stringify({
         phones: [{
@@ -49,7 +49,7 @@ module.exports = {
 
   down(queryInterface) {
     return queryInterface.bulkDelete('Profiles', {
-      id: { $in: [1, 2] }
+      name: { $in: ['Oleg Gaidarenko', 'Andrés C. Viesca Ruiz'] }
     });
   }
 };

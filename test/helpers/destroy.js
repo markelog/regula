@@ -5,4 +5,9 @@ module.exports = async function destroy() {
     force: true,
     where: {}
   });
+
+  await models.Projects.destroy({
+    force: true,
+    where: {}
+  });
 };

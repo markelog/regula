@@ -1,30 +1,20 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Profiles', {
+    return queryInterface.createTable('Projects', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      bossId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       name: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
         validate: {
           len: [2, 255]
         }
       },
-      title: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-        validate: {
-          len: [2, 255]
-        }
-      },
+      pm: Sequelize.INTEGER,
       about: {
         type: Sequelize.STRING(1000),
         allowNull: false,
@@ -32,16 +22,22 @@ module.exports = {
           len: [2, 1000]
         }
       },
-      contacts: {
-        type: Sequelize.JSONB,
+      description: {
+        type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          len: [2, 255]
+        }
+      },
+      avatar: {
+        type: Sequelize.TEXT
+      },
+      links: {
+        type: Sequelize.JSONB,
         defaultValue: {}
       },
-      social: {
-        type: Sequelize.JSONB,
-        allowNull: false,
-        defaultValue: {}
-      },
+      start: Sequelize.DATE,
+      end: Sequelize.DATE,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -51,14 +47,10 @@ module.exports = {
         type: Sequelize.DATE
       },
       deletedAt: Sequelize.DATE
-    }, {
-      timestamps: true,
-      paranoid: true,
-      tableName: 'Profiles'
     });
   },
 
   down(queryInterface) {
-    return queryInterface.dropTable('Profiles');
+    return queryInterface.dropTable('Projects');
   }
 };
