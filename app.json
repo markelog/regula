@@ -2,9 +2,6 @@
   "name": "maze-api",
   "scripts": {
   },
-  "env": {
-    "NODE_ENV": "review"
-  },
   "formation": {
   },
   "addons": [

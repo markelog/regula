@@ -10,7 +10,5 @@ process.env.NODE_ENV = 'testing';
 global.expect = chai.expect;
 global.sinon = sinon;
 global.request = supertest;
-
-// Can't use an `const  statement =,require(it will initialize ap)p
-global.app = agent(require('../../src/app')).app;
+global.app = agent(require('../../src')).app;
 

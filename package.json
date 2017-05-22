@@ -11,7 +11,7 @@
     "start": "npm run db && npm run dev",
     "test:integration": "mocha 'test/integration/**/*.js' --trace-warnings",
     "test:unit": "mocha 'test/unit/**/*.js' --trace-warnings",
-    "test:coverage": "istanbul cover _mocha --report lcovonly -- 'test/{unit,integration}/**/*.js'",
+    "test:coverage": "istanbul cover _mocha --report html -- 'test/{unit,integration}/**/*.js'",
     "test:codecov": "npm run test:coverage && codecov --token=a6d1ad7e-18e5-4dcd-a713-b1f26eef4d74",
     "test": "npm run lint && npm run db:start && npm run db:migrate && npm run test:coverage",
     "ci": "npm run lint && npm run db:start && npm run db:migrate && npm run test:codecov",

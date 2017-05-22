@@ -5,9 +5,6 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('kcors');
 
-// Internal dependecies
-const config = require('./configs');
-
 // Routers
 const favicon = require('./routers/favicon');
 const profiles = require('./routers/profiles');
@@ -17,27 +14,32 @@ const errors = require('./middlewares/errors');
 const logger = require('./middlewares/logger');
 const respond = require('./middlewares/respond');
 
-// Initialize App
-const app = new Koa();
+module.exports = (configs) => {
+  // Initialize App
+  const app = new Koa();
 
-// Define the app
-app.use(respond());
-app.use(errors());
+  // Define the app
+  app.use(respond());
+  app.use(errors(configs));
 
-app.use(favicon.routes());
+  app.use(favicon.routes());
 
-if (config.logs.enabled) {
-  app.use(logger());
-}
+  if (configs.logs.enabled) {
+    app.context.logger = logger();
+    app.use(app.context.logger);
+  }
 
-app.use(cors());
-app.use(bodyParser());
+  app.use(cors());
+  app.use(bodyParser());
 
-app.use(profiles.allowedMethods({ throw: true }));
-app.use(profiles.routes());
+  app.use(profiles.allowedMethods({ throw: true }));
+  app.use(profiles.routes());
 
-app.listen(config.http.port, () => {
-  console.log('Started');
-});
+  app.listen(configs.http.port, () => {
+    if (configs.logs.enabled) {
+      console.log('Started');
+    }
+  });
 
-module.exports = app;
+  return app;
+};

@@ -6,7 +6,7 @@
   "apps" : [
     {
       "name": "maze-api",
-      "script": "src/app.js",
+      "script": "src",
       "exec_mode": "cluster",
       "merge_logs": true,
       "node_args": "--optimize_for_size --max_old_space_size=920 --gc_interval=100 --use_strict --trace-warnings",

@@ -1,6 +1,4 @@
-const configs = require('../configs');
-
-module.exports = () => {
+module.exports = (configs) => {
   return async function errors(ctx, next) {
     try {
       await next();
