@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint .",
     "pm2": "pm2 start ecosystem.json --env=production && pm2 logs",
-    "dev": "pm2-dev src/app.js",
+    "dev": "pm2-dev src",
     "start": "npm run db && npm run dev",
     "test:integration": "mocha 'test/integration/**/*.js' --trace-warnings",
     "test:unit": "mocha 'test/unit/**/*.js' --trace-warnings",
