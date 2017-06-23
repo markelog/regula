@@ -12,13 +12,13 @@ module.exports = {
       birthday: new Date('1992-03-08'),
       avatar: 'https://avatars3.githubusercontent.com/u/945528?v=3&s=400',
       contacts: JSON.stringify({
-        phones: [{
+        phones: {
           home: '+7 (965) 265-14-72'
-        }],
+        },
 
-        emails: [{
+        emails: {
           work: 'markelog@wearereasonablepeople.com'
-        }]
+        }
       })
     }, {
       bossId: 1,
