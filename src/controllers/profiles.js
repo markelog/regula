@@ -92,7 +92,11 @@ module.exports = class Profile {
    * @return {Promise}
    */
   async get(handle) {
-    const where = { handle, deletedAt: null };
+    const where = {
+      handle: {
+        $ilike: handle
+      },
+      deletedAt: null };
 
     return models.Profiles.findOne({
       attributes, where, include

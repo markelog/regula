@@ -297,6 +297,35 @@ describe('/profiles', () => {
       it('should contain proper projects properties', () => {
         validateProjectProps(profile.projects[0]);
       });
+
+      describe('specific profile case-insensitive', () => {
+        beforeEach(() => {
+          return request(app)
+          .get('/profiles/MarkelOg')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .then((res) => {
+            profile = res.body.data;
+          });
+        });
+
+        afterEach(() => {
+          profile = undefined;
+        });
+
+        it('responds with proper data', () => {
+          expect(profile.handle).to.equal('markelog');
+          expect(profile.birthday).to.contain('1992-12-12');
+        });
+
+        it('should contain proper properties', () => {
+          validateProfileProps(profile);
+        });
+
+        it('should contain proper projects properties', () => {
+          validateProjectProps(profile.projects[0]);
+        });
+      });
     });
 
     it('responds with 404 for non-existent profile', () => {
