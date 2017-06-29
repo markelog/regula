@@ -3,7 +3,7 @@ const moment = require('moment');
 module.exports = (storage, Sequelize) => {
   const Profiles = storage.define('Profiles', {
     id: {
-      type: Sequelize.UUID,
+      type: Sequelize.INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
