@@ -36,7 +36,7 @@ module.exports = {
           city: 'Paris'
         },
         current: {
-          country: 'The Netherlands',
+          country: 'Netherlands',
           city: 'Rotterdam'
         }
       })
@@ -53,7 +53,7 @@ module.exports = {
       avatar: 'https://avatars0.githubusercontent.com/u/9158996?v=3&s=400',
       addresses: JSON.stringify({
         current: {
-          country: 'The Netherlands',
+          country: 'Netherlands',
           city: 'Rotterdam',
           street: 'bergpolderstraat 49',
         }
