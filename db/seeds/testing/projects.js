@@ -47,7 +47,7 @@ module.exports = {
 
   down(queryInterface) {
     return queryInterface.bulkDelete('Projects', {
-      name: 'Maze'
+      id: { $in: [1, 2] }
     });
   }
 };

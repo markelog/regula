@@ -37,8 +37,7 @@ module.exports = {
         },
         current: {
           country: 'The Netherlands',
-          province: 'Gelderland',
-          city: 'Bronkhorst'
+          city: 'Rotterdam'
         }
       })
     }, {
@@ -53,15 +52,10 @@ module.exports = {
       joinedAt: new Date(),
       avatar: 'https://avatars0.githubusercontent.com/u/9158996?v=3&s=400',
       addresses: JSON.stringify({
-        home: {
-          country: 'USA',
-          state: 'Texas',
-          city: 'Paris'
-        },
         current: {
           country: 'The Netherlands',
-          province: 'Gelderland',
-          city: 'Bronkhorst'
+          city: 'Rotterdam',
+          street: 'bergpolderstraat 49',
         }
       }),
       contacts: JSON.stringify({
@@ -79,7 +73,7 @@ module.exports = {
 
   down(queryInterface) {
     return queryInterface.bulkDelete('Profiles', {
-      name: { $in: ['Oleg Gaidarenko', 'Andrés C. Viesca Ruiz'] }
+      id: { $in: [1, 2] }
     });
   }
 };
