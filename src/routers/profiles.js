@@ -1,12 +1,12 @@
 const Router = require('koa-router');
 
 const AppError = require('../modules/AppError');
-const Hello = require('../controllers/profiles');
+const Profiles = require('../controllers/profiles');
 
 const router = new Router({ prefix: '/profiles' });
 
 router.use(async (context, next) => {
-  context.controller = new Hello(context);
+  context.controller = new Profiles(context);
 
   await next();
 });
