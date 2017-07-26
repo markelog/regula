@@ -465,7 +465,10 @@ describe('/profiles', () => {
           .expect('content-type', /json/)
           .expect(400);
 
-        expect(response).to.have.deep.property('body.data[0].message', 'Validation len failed');
+        expect(response).to.have.deep.property(
+          'body.data[0].message',
+          'Validation len on name failed'
+        );
       });
     });
   });
