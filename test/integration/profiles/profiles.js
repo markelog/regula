@@ -36,11 +36,13 @@ describe('/profiles', () => {
   };
 
   function create(data) {
+    delete data.bossId;
+
     return request(app)
-        .post('/profiles')
-        .send(data)
-        .expect('Content-Type', /json/)
-        .expect(201);
+      .post('/profiles')
+      .send(data)
+      .expect('Content-Type', /json/)
+      .expect(201);
   }
 
   beforeEach(() => {
@@ -343,13 +345,6 @@ describe('/profiles', () => {
   describe('POST /profiles', () => {
     beforeEach(destroy);
 
-    it('creates profile', async () => {
-      await create(viestat);
-      await create(markelog);
-
-      return request(app).get('/profiles/markelog').expect(200);
-    });
-
     it('throws validation error', async () => {
       const { body } = await request(app)
         .post('/profiles')
@@ -358,11 +353,10 @@ describe('/profiles', () => {
         .expect(400);
 
       expect(body).to.have.deep.property('message', 'Can\'t create a user');
-      expect(body).to.have.deep.property('data[0].message');
-      expect(body.data[0].message).to.contain('cannot be null');
     });
 
     it('throws validation error for projects', async () => {
+      delete markelog.bossId;
       markelog.projects = ['test'];
 
       const { body } = await request(app)
@@ -418,6 +412,13 @@ describe('/profiles', () => {
         });
       });
 
+      it('just creates a profiles', async () => {
+        await create(viestat);
+        await create(markelog);
+
+        return request(app).get('/profiles/markelog').expect(200);
+      });
+
       it('creates profile if it doesn\'t exist', async () => {
         delete markelog.id;
         markelog.handle = 'test';
@@ -455,7 +456,6 @@ describe('/profiles', () => {
       });
 
       it('throws validation error', async () => {
-        delete markelog.id;
         markelog.name = 't';
         await create(viestat);
 

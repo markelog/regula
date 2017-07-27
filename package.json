@@ -42,7 +42,7 @@
     "parse-database-url": "^0.3.0",
     "pg": "^6.2.2",
     "pm2": "^2.4.0",
-    "sequelize": "^4.0.0-2",
+    "sequelize": "^4.4.2",
     "sequelize-cli": "^2.7.0"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@ module.exports = (storage, Sequelize) => {
     },
     bossId: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     name: {
       type: Sequelize.TEXT,

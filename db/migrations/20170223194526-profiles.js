@@ -9,7 +9,7 @@ module.exports = {
       },
       bossId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Profiles',
           key: 'id'

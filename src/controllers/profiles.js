@@ -3,13 +3,13 @@ const models = require('../models');
 const attributes = {
   exclude: [
     'id',
-    'bossId',
+    // 'bossId',
     'deletedAt',
   ]
 };
 
 const include = [{
-  required: true,
+  required: false,
   model: models.Profiles,
   as: 'boss',
   attributes: ['name', 'handle']
