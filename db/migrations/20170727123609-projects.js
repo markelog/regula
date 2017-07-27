@@ -14,7 +14,13 @@ module.exports = {
           len: [2, 255]
         }
       },
-      pm: Sequelize.INTEGER,
+      pm: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Profiles',
+          key: 'id'
+        }
+      },
       about: {
         type: Sequelize.STRING(1000),
         allowNull: false,

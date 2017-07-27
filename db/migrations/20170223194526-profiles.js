@@ -9,7 +9,11 @@ module.exports = {
       },
       bossId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Profiles',
+          key: 'id'
+        }
       },
       name: {
         type: Sequelize.TEXT,

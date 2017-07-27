@@ -3,11 +3,19 @@ module.exports = {
     return queryInterface.createTable('ProfileProject', {
       profileId: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+          model: 'Profiles',
+          key: 'id'
+        }
       },
       projectId: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+          model: 'Projects',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
