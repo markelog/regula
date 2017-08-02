@@ -352,10 +352,10 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .expect(400);
 
-      expect(body).to.have.deep.property('message', 'Can\'t create a user');
+      expect(body).to.have.deep.property('message', 'Validation Error');
     });
 
-    it('throws validation error for projects', async () => {
+    it('throws validation error for incorrect type of the projects', async () => {
       delete markelog.bossId;
       markelog.projects = ['test'];
 
@@ -365,10 +365,7 @@ describe('/profiles', () => {
         .expect('Content-Type', /json/)
         .expect(400);
 
-      await request(app).get('/profiles/markelog').expect(404);
-
-      expect(body).to.have.deep.property('message', 'Can\'t create a user');
-      expect(body).to.have.deep.property('data', 'invalid input syntax for integer: "test"');
+      expect(body).to.have.deep.property('message', 'Incorrect projects reference');
     });
   });
 
@@ -465,10 +462,11 @@ describe('/profiles', () => {
           .expect('content-type', /json/)
           .expect(400);
 
-        expect(response).to.have.deep.property(
-          'body.data[0].message',
-          'Validation len on name failed'
+        expect(response.body.type).to.equal('error');
+        expect(response.body.message).to.equal(
+          'Validation error: Name should be longer then 2 symbols'
         );
+        expect(response.body.data).is.not.empty;
       });
     });
   });

@@ -121,16 +121,17 @@ module.exports = class Profile {
   /**
    * Create profile
    * @param {Object} data - profile data
-   * @return {Boolean} - whenever or not action was performed
+   * @return {Object} - newly created profile instance
    */
   async create(data) {
     const { projects } = data;
     delete data.projects;
 
+    let profile;
     const transaction = await models.sequelize.transaction();
 
     try {
-      const profile = await models.Profiles.create(data, {
+      profile = await models.Profiles.create(data, {
         transaction
       });
 
@@ -142,7 +143,7 @@ module.exports = class Profile {
       throw error;
     }
 
-    return true;
+    return profile;
   }
 
   /**
@@ -151,17 +152,28 @@ module.exports = class Profile {
    * @param {Object} profile
    * @param {Array} projects
    * @param {Object} transaction
+   * @return {Promise}
    */
   async setProjects(profile, projects, transaction) {
+    const error = new Error('Incorrect projects reference');
+    error.status = 400;
+
     if (projects === undefined) {
-      return;
+      return Promise.resolve();
     }
 
-    try {
-      await profile.setProjects(projects, { transaction });
-    } catch (error) {
-      throw new Error(error.message);
+    if (Array.isArray(projects) === false) {
+      throw error;
     }
+
+    const checkArray = projects.filter(Number.isInteger);
+
+    // This is so ugly, need to add proper validation mechanism
+    if (checkArray.length !== projects.length) {
+      throw error;
+    }
+
+    return profile.setProjects(projects, { transaction });
   }
 
   /**

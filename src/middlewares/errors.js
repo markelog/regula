@@ -1,11 +1,17 @@
+const Sequelize = require('sequelize');
+
 module.exports = (configs) => {
   return async function errors(ctx, next) {
     try {
       await next();
     } catch (error) {
-      const status = error.status || 500;
+      let status = error.status || 500;
 
-      ctx.respond(status, error.data, error.message);
+      if (error instanceof Sequelize.ValidationError) {
+        status = 400;
+      }
+
+      ctx.error(status, error);
 
       if (configs.logs.enabled) {
         console.error(error);

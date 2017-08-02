@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+
 const app = require('../../../src/app');
 const errors = require('../../../src/middlewares/errors');
 
@@ -37,7 +39,7 @@ describe('App', () => {
         }
       });
 
-      const ctx = { respond: sinon.stub() };
+      const ctx = { error: sinon.stub() };
       const error = new Error('test');
       const next = sinon.stub().throws(error);
 
@@ -53,7 +55,7 @@ describe('App', () => {
         }
       });
 
-      const ctx = { respond: sinon.stub() };
+      const ctx = { error: sinon.stub() };
       const error = new Error('test');
       const next = sinon.stub().throws(error);
 
@@ -69,13 +71,13 @@ describe('App', () => {
         }
       });
 
-      const ctx = { respond: sinon.stub() };
+      const ctx = { error: sinon.stub() };
       const error = new Error('test');
       const next = sinon.stub().throws(error);
 
       start(ctx, next);
 
-      expect(ctx.respond.getCall(0).args[0]).to.equal(500);
+      expect(ctx.error.getCall(0).args[0]).to.equal(500);
     });
 
     it('should set error status', () => {
@@ -85,14 +87,30 @@ describe('App', () => {
         }
       });
 
-      const ctx = { respond: sinon.stub() };
+      const ctx = { error: sinon.stub() };
       const error = new Error('test');
       error.status = 403;
       const next = sinon.stub().throws(error);
 
       start(ctx, next);
 
-      expect(ctx.respond.getCall(0).args[0]).to.equal(403);
+      expect(ctx.error.getCall(0).args[0]).to.equal(403);
+    });
+
+    it('should set error status for the Sequelize.ValidationError', () => {
+      const start = errors({
+        logs: {
+          enabled: true
+        }
+      });
+
+      const ctx = { error: sinon.stub() };
+      const error = new Sequelize.ValidationError('test');
+      const next = sinon.stub().throws(error);
+
+      start(ctx, next);
+
+      expect(ctx.error.getCall(0).args[0]).to.equal(400);
     });
   });
 });

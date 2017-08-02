@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 
-const AppError = require('../modules/AppError');
 const Profiles = require('../controllers/profiles');
 
 const router = new Router({ prefix: '/profiles' });
@@ -15,20 +14,16 @@ router.get(
   '/',
   async (ctx) => {
     const result = await ctx.controller.all(ctx.query.q);
-
-    ctx.respond(200, result);
+    ctx.out(200, result, 'There you go');
   }
 );
 
 router.post(
   '/',
   async (ctx) => {
-    try {
-      await ctx.controller.create(ctx.request.body);
-      ctx.respond(201);
-    } catch (error) {
-      ctx.throw(new AppError(400, error.errors || error.message, 'Can\'t create a user'));
-    }
+    const profile = await ctx.controller.create(ctx.request.body);
+
+    ctx.out(201, profile, 'Profile was created');
   }
 );
 
@@ -38,10 +33,11 @@ router.get(
     const result = await ctx.controller.get(ctx.params.handle);
 
     if (result == null) {
-      ctx.throw(404);
+      ctx.out(404);
+      return;
     }
 
-    ctx.respond(200, result);
+    ctx.out(200, result, 'There you go');
   }
 );
 
@@ -50,7 +46,7 @@ router.delete(
   async (ctx) => {
     await ctx.controller.delete(ctx.params.handle);
 
-    ctx.respond(204, {}, 'deleted');
+    ctx.out(204, 'Profile was removed');
   }
 );
 
@@ -64,12 +60,13 @@ router.put(
       );
 
       if (type === 'created') {
-        ctx.respond(201);
+        ctx.out(201, {}, 'Profile was created');
+
       } else if (type === 'updated') {
-        ctx.respond(204, {}, 'updated');
+        ctx.out(204, {}, 'Profile was updated');
       }
     } catch (error) {
-      ctx.throw(new AppError(400, error.errors));
+      ctx.error(400, error);
     }
   }
 );

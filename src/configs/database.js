@@ -5,6 +5,6 @@ module.exports = {
   options: {
     port: 8998,
     dialect: 'postgres',
-    logging: console.log
+    logging: () => {}
   }
 };

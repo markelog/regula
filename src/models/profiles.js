@@ -16,7 +16,10 @@ module.exports = (storage, Sequelize) => {
       type: Sequelize.TEXT,
       allowNull: false,
       validate: {
-        len: [2, 255]
+        len: {
+          args: [2, 255],
+          msg: 'Name should be longer then 2 symbols'
+        }
       }
     },
     handle: {
@@ -24,21 +27,30 @@ module.exports = (storage, Sequelize) => {
       allowNull: false,
       unique: true,
       validate: {
-        len: [2, 255]
+        len: {
+          args: [2, 255],
+          msg: 'Handle should be longer then 2 symbols'
+        }
       }
     },
     title: {
       type: Sequelize.TEXT,
       allowNull: false,
       validate: {
-        len: [2, 255]
+        len: {
+          args: [2, 255],
+          msg: 'Title should be longer then 2 symbols'
+        }
       }
     },
     about: {
       type: Sequelize.STRING(1000),
       allowNull: false,
       validate: {
-        len: [2, 1000]
+        len: {
+          args: [1, 1000],
+          msg: 'Too long about'
+        }
       }
     },
     contacts: {

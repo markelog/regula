@@ -4,6 +4,9 @@ const config = require('./default');
 
 const psql = parse(process.env.DATABASE_URL);
 
+config.setup.executeSeeds = false;
+config.http.exposeErrors = false;
+
 config.database = {
   username: psql.user,
   password: psql.password,

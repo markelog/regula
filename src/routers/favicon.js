@@ -5,9 +5,8 @@ const router = new Router();
 router.get(
   '/favicon.ico',
   async (ctx) => {
-    ctx.respond(204);
+    ctx.out(204);
   }
 );
 
 module.exports = router;
-

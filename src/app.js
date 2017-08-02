@@ -12,14 +12,16 @@ const profiles = require('./routers/profiles');
 // Middlewares
 const errors = require('./middlewares/errors');
 const logger = require('./middlewares/logger');
-const respond = require('./middlewares/respond');
+const error = require('./middlewares/error');
+const out = require('./middlewares/out');
 
 module.exports = (configs) => {
   // Initialize App
   const app = new Koa();
 
   // Define the app
-  app.use(respond());
+  app.use(out());
+  app.use(error());
   app.use(errors(configs));
 
   app.use(favicon.routes());
@@ -37,7 +39,7 @@ module.exports = (configs) => {
 
   app.listen(configs.http.port, () => {
     if (configs.logs.enabled) {
-      console.log('Started');
+      console.log(`Started on port ${configs.http.port}`);
     }
   });
 
