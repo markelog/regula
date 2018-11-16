@@ -5,7 +5,7 @@
    */
   "apps" : [
     {
-      "name": "maze-api",
+      "name": "regula-api",
       "script": "src",
       "exec_mode": "cluster",
       "merge_logs": true,

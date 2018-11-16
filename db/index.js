@@ -3,7 +3,7 @@ const PSQL = require('fastdev-psql');
 const { database } = require('../src/configs');
 
 const psql = new PSQL({
-  name: 'maze-storage',
+  name: 'regula-storage',
   user: database.username,
   password: database.password,
   db: database.database,

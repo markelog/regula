@@ -1,7 +1,7 @@
 {
-  "name": "maze-api",
+  "name": "regula-api",
   "version": "1.0.0",
-  "description": "Maze API",
+  "description": "regula API",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -25,13 +25,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/wearereasonablepeople/maze-api"
+    "url": "github.com/markelog/regula-api"
   },
   "author": "Oleg Gaidarenko <markelog@gmail.com>",
   "bugs": {
-    "url": "https://github.com/wearereasonablepeople/maze-api/issues"
+    "url": "https://github.com/markelog/regula-api/issues"
   },
-  "homepage": "https://github.com/wearereasonablepeople/maze-api#readme",
+  "homepage": "https://github.com/markelog/regula-api#readme",
   "dependencies": {
     "concurrency-logger": "^2.0.1",
     "kcors": "^2.2.1",

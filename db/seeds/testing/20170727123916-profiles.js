@@ -18,7 +18,7 @@ module.exports = {
         },
 
         emails: {
-          work: 'markelog@wearereasonablepeople.com'
+          work: 'markelog@markelog.com'
         },
 
         slack: {

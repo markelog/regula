@@ -98,18 +98,18 @@ describe('/profiles', () => {
     project = {
       id: 1,
       pm: 1,
-      name: 'Maze',
+      name: 'regula',
       about: 'Intranet social network with focus on business side of employees communication',
       description: 'Don\'t get lost',
-      avatar: 'http://www.mazegenerator.net/static/theta_maze_with_20_cells_diameter.png',
+      avatar: 'http://www.regulagenerator.net/static/theta_regula_with_20_cells_diameter.png',
       links: JSON.stringify([{
         type: 'github',
         name: 'front',
-        link: 'https://github.com/wearereasonablepeople/maze'
+        link: 'https://github.com/markelog/regula'
       }, {
         type: 'github',
         name: 'api',
-        link: 'https://github.com/wearereasonablepeople/maze-api'
+        link: 'https://github.com/markelog/regula-api'
       }]),
       start: new Date('May 17, 2017'),
       end: new Date('December 17, 2017'),
@@ -204,8 +204,8 @@ describe('/profiles', () => {
           expect(testMarkelog).to.have.deep.property('projects[0].pm.handle', 'markelog');
         });
 
-        it('should be associated with the Maze', () => {
-          expect(testMarkelog.projects[0].name).to.equal('Maze');
+        it('should be associated with the regula', () => {
+          expect(testMarkelog.projects[0].name).to.equal('regula');
         });
 
         it('should contain proper properties', () => {
@@ -449,7 +449,7 @@ describe('/profiles', () => {
           .get('/profiles/test')
           .expect(200);
 
-        expect(body).to.have.deep.property('data.projects[0].name', 'Maze');
+        expect(body).to.have.deep.property('data.projects[0].name', 'regula');
       });
 
       it('throws validation error', async () => {

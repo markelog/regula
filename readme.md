@@ -1,4 +1,4 @@
-# Maze API [![Travis](https://img.shields.io/travis/wearereasonablepeople/maze-api.svg)](https://travis-ci.org/wearereasonablepeople/maze-api) [![Codecov](https://img.shields.io/codecov/c/github/wearereasonablepeople/maze-api.svg)](https://codecov.io/gh/wearereasonablepeople/maze-api)
+# regula API [![Travis](https://img.shields.io/travis/markelog/regula-api.svg)](https://travis-ci.org/markelog/regula-api) [![Codecov](https://img.shields.io/codecov/c/github/markelog/regula-api.svg)](https://codecov.io/gh/markelog/regula-api)
 
 ## Requirements
 
