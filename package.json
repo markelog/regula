@@ -21,7 +21,7 @@
     "db": "npm run db:start && npm run db:migrate && npm run db:seed"
   },
   "engines": {
-    "node": "^8.1.2"
+    "node": "^10.10.0"
   },
   "repository": {
     "type": "git",
@@ -36,25 +36,25 @@
     "concurrency-logger": "^2.0.1",
     "kcors": "^2.2.1",
     "koa": "^2.0.0",
-    "koa-bodyparser": "^3.2.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.1.0",
     "moment": "^2.17.1",
     "parse-database-url": "^0.3.0",
-    "pg": "^6.2.2",
-    "pm2": "^2.4.0",
+    "pg": "^7.6.1",
+    "pm2": "^3.2.2",
     "sequelize": "^4.4.2",
-    "sequelize-cli": "^2.7.0"
+    "sequelize-cli": "^5.3.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "codecov": "^1.0.1",
-    "eslint": "^3.15.0",
-    "eslint-config-sexy": "^2.0.0",
+    "eslint": "^5.9.0",
+    "eslint-config-sexy": "^5.0.0",
     "fastdev-psql": "^1.2.3",
     "istanbul": "^1.0.0-alpha.2",
-    "mocha": "^3.4.1",
-    "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.1.1",
+    "sinon-chai": "^3.2.0",
     "supertest": "^3.0.0",
     "supertest-koa-agent": "^0.3.0"
   }

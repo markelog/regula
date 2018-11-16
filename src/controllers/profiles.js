@@ -96,7 +96,8 @@ module.exports = class Profile {
       handle: {
         $ilike: handle
       },
-      deletedAt: null };
+      deletedAt: null
+    };
 
     return models.Profiles.findOne({
       attributes, where, include

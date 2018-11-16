@@ -192,7 +192,7 @@ describe('/profiles', () => {
         let testMarkelog;
 
         beforeEach(() => {
-          testMarkelog = profiles.filter(profile => profile.handle === 'markelog')[0];
+          [testMarkelog] = profiles.filter(profile => profile.handle === 'markelog');
         });
 
         afterEach(() => {
@@ -303,12 +303,12 @@ describe('/profiles', () => {
       describe('specific profile case-insensitive', () => {
         beforeEach(() => {
           return request(app)
-          .get('/profiles/MarkelOg')
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .then((res) => {
-            profile = res.body.data;
-          });
+            .get('/profiles/MarkelOg')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+              profile = res.body.data;
+            });
         });
 
         afterEach(() => {
